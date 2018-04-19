@@ -27,5 +27,4 @@ routes
 flex
 webob
 jsonpath-rw
-prometheus_client
-statsd
+./contrib/metrics/statsd

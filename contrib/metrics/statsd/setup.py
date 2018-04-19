@@ -42,11 +42,11 @@ setup(
     test_suite='tests',
     zip_safe=False,
     include_package_data=True,
-    packages=find_packages(exclude=['setuptools', 'tests']),
+    packages=find_packages(exclude=['setuptools', 'tests', 'statsd_driver']),
     scripts=[],
     entry_points={
         'st2common.metrics.driver': [
-            'statsd = stastd_driver.StatsdDriver',
+            'statsd_driver = statsd_driver.statsd_driver:StatsdDriver',
         ],
     }
 )
