@@ -20,12 +20,7 @@ from mock import patch, MagicMock
 from oslo_config import cfg
 
 from st2common.metrics import metrics
-from st2common.metrics.drivers.statsd_driver import StatsdDriver
 from st2common.constants.metrics import METRICS_COUNTER_SUFFIX, METRICS_TIMER_SUFFIX
-
-__all__ = [
-    'TestBaseMetricsDriver'
-]
 
 
 class TestBaseMetricsDriver(unittest2.TestCase):
@@ -42,77 +37,6 @@ class TestBaseMetricsDriver(unittest2.TestCase):
 
     def test_dec_timer(self):
         self._driver.dec_counter('test')
-
-
-class TestStatsDMetricsDriver(unittest2.TestCase):
-    _driver = None
-
-    @patch('st2common.metrics.drivers.statsd_driver.statsd')
-    def setUp(self, statsd):
-        self._driver = StatsdDriver()
-        self._driver._connection = MagicMock()
-
-        statsd.StatsClient.assert_called_once_with(cfg.CONF.metrics.host, cfg.CONF.metrics.port)
-
-    def test_time(self):
-        params = ('test', 10)
-        self._driver.time(*params)
-        self._driver._connection.timing.assert_called_with(*params)
-
-    def test_time_with_float(self):
-        params = ('test', 10.5)
-        self._driver.time(*params)
-        self._driver._connection.timing.assert_called_with(*params)
-
-    def test_time_with_invalid_key(self):
-        params = (2, 2)
-        with self.assertRaises(AssertionError):
-            self._driver.time(*params)
-
-    def test_time_with_invalid_time(self):
-        params = ('test', '1')
-        with self.assertRaises(AssertionError):
-            self._driver.time(*params)
-
-    def test_inc_counter_with_default_amount(self):
-        key = 'test'
-        self._driver.inc_counter(key)
-        self._driver._connection.incr.assert_called_with(key, 1)
-
-    def test_inc_counter_with_amount(self):
-        params = ('test', 2)
-        self._driver.inc_counter(*params)
-        self._driver._connection.incr.assert_called_with(*params)
-
-    def test_inc_timer_with_invalid_key(self):
-        params = (2, 2)
-        with self.assertRaises(AssertionError):
-            self._driver.inc_counter(*params)
-
-    def test_inc_timer_with_invalid_amount(self):
-        params = ('test', '1')
-        with self.assertRaises(AssertionError):
-            self._driver.inc_counter(*params)
-
-    def test_dec_timer_with_default_amount(self):
-        key = 'test'
-        self._driver.dec_counter(key)
-        self._driver._connection.decr.assert_called_with(key, 1)
-
-    def test_dec_timer_with_amount(self):
-        params = ('test', 2)
-        self._driver.dec_counter(*params)
-        self._driver._connection.decr.assert_called_with(*params)
-
-    def test_dec_timer_with_invalid_key(self):
-        params = (2, 2)
-        with self.assertRaises(AssertionError):
-            self._driver.dec_counter(*params)
-
-    def test_dec_timer_with_invalid_amount(self):
-        params = ('test', '1')
-        with self.assertRaises(AssertionError):
-            self._driver.dec_counter(*params)
 
 
 class TestCounterContextManager(unittest2.TestCase):

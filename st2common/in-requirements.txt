@@ -27,4 +27,3 @@ routes
 flex
 webob
 jsonpath-rw
-./contrib/metrics/statsd
