@@ -27,3 +27,4 @@ routes
 flex
 webob
 jsonpath-rw
+git+https://github.com/stackstorm/st2.git@issue-2974/metrics#egg=metrics&subdirectory=contrib/metrics/statsd_driver
